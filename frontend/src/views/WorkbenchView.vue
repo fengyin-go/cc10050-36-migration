@@ -15,6 +15,9 @@
       </div>
     </header>
 
+    <CurrencyMigrationPanel v-if="meta.key === 'currency_conv'" :tick="panelTick" @changed="onPanelChanged" />
+    <ExportCredentialPanel v-if="meta.key === 'price_export'" :tick="panelTick" @changed="onPanelChanged" />
+
     <div class="stat-row">
       <article v-for="item in stats" :key="item.label" class="stat-card">
         <span class="stat-label">{{ item.label }}</span>
@@ -29,6 +32,10 @@
     </p>
 
     <form class="filter-bar" @submit.prevent="reload">
+      <label class="filter-item">
+        <span>关键字（编号/凭据/关联键/来源）</span>
+        <input v-model="keyword" data-testid="keyword" placeholder="如 L09、N10、DLV-L09、ASC-" />
+      </label>
       <label v-for="field in filterFields" :key="field" class="filter-item">
         <span>{{ field }}</span>
         <input v-model="filters[field]" :data-testid="`filter-${field}`" :placeholder="`按${field}检索`" />
@@ -36,6 +43,10 @@
       <button class="btn" data-testid="query" type="submit">查询</button>
       <button class="btn ghost" data-testid="reset" type="button" @click="resetFilters">重置条件</button>
     </form>
+
+    <p v-if="noticeMessage" class="action-notice" data-testid="action-notice" data-ok="true">
+      {{ noticeMessage }}
+    </p>
 
     <table class="data-table">
       <thead>
@@ -96,6 +107,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 
+import ExportCredentialPanel from '@/components/ExportCredentialPanel.vue'
+import CurrencyMigrationPanel from '@/components/CurrencyMigrationPanel.vue'
 import {
   createEntry,
   downloadEntries,
@@ -110,7 +123,10 @@ const meta = moduleMeta(props.moduleKey)
 const rows = ref<EntryRow[]>([])
 const total = ref(0)
 const errorMessage = ref('')
+const noticeMessage = ref('')
+const keyword = ref('')
 const filters = ref<Record<string, string>>({})
+const panelTick = ref(0)
 const filterFields = meta.fields.slice(0, 3)
 const showCreate = ref(false)
 const creating = ref(false)
@@ -132,6 +148,7 @@ const statusSummary = computed(() =>
 
 function resetFilters() {
   filters.value = {}
+  keyword.value = ''
   void reload()
 }
 
@@ -167,9 +184,12 @@ async function submitCreate() {
 
 async function runAction(action: string, row: EntryRow) {
   errorMessage.value = ''
+  noticeMessage.value = ''
   try {
     const result = await applyAction(meta.key, Number(row.id), action)
     if (!result.ok) throw new Error(result.message)
+    noticeMessage.value = result.message || `已执行动作：${action}`
+    panelTick.value += 1
     await reload()
   } catch (error) {
     errorMessage.value = error instanceof Error ? error.message : '操作失败'
@@ -179,12 +199,20 @@ async function runAction(action: string, row: EntryRow) {
 async function reload() {
   errorMessage.value = ''
   try {
-    const payload = await listEntries(meta.key, filters.value)
+    const payload = await listEntries(meta.key, {
+      keyword: keyword.value,
+      ...filters.value,
+    })
     rows.value = payload.items
     total.value = payload.total
   } catch (error) {
     errorMessage.value = error instanceof Error ? error.message : '业务列表读取失败'
   }
+}
+
+function onPanelChanged() {
+  panelTick.value += 1
+  void reload()
 }
 
 onMounted(reload)

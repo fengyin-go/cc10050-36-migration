@@ -1,0 +1,133 @@
+{
+  "receipt_id": "RCP-MIG-0001",
+  "kind": "换算迁移回执",
+  "created_at": "2026-11-26T10:49:01.489877+00:00",
+  "status": "completed",
+  "interrupted": false,
+  "catalog_dir": "/workspace/backend/data/version-catalog",
+  "total_in_db": 6,
+  "processed": 6,
+  "created": 0,
+  "updated": 6,
+  "duplicate_effective_resolved": 0,
+  "db_rows_retained": 6,
+  "db_retention_note": "数据库保留全部已写附注的币对与日期，迁移只复制到版本目录，不删行。",
+  "effective_pointers": {
+    "USD/CNY": "ASC-20260809-USDCNY-L09",
+    "货币换算器样例2/货币换算器样例2": "SNAP-ROW-2"
+  },
+  "source_review": [
+    {
+      "association_key": "SNAP-ROW-1",
+      "row_id": 1,
+      "date": "2026-09-01",
+      "pair": "货币换算器样例1/货币换算器样例1",
+      "rate": null,
+      "current_source": "货币换算器样例1",
+      "source_kind": "",
+      "source_missing": true,
+      "reason": "原始取数来源缺失/为占位，补核前该快照不可作为口径消费",
+      "action": "POST /api/currency_conv/verify-source {association_key, source, provider?}"
+    },
+    {
+      "association_key": "SNAP-ROW-2",
+      "row_id": 2,
+      "date": "2026-09-02",
+      "pair": "货币换算器样例2/货币换算器样例2",
+      "rate": null,
+      "current_source": "货币换算器样例2",
+      "source_kind": "",
+      "source_missing": true,
+      "reason": "原始取数来源缺失/为占位，补核前该快照不可作为口径消费",
+      "action": "POST /api/currency_conv/verify-source {association_key, source, provider?}"
+    },
+    {
+      "association_key": "SNAP-ROW-3",
+      "row_id": 3,
+      "date": "2026-09-03",
+      "pair": "货币换算器样例3/货币换算器样例3",
+      "rate": null,
+      "current_source": "货币换算器样例3",
+      "source_kind": "",
+      "source_missing": true,
+      "reason": "原始取数来源缺失/为占位，补核前该快照不可作为口径消费",
+      "action": "POST /api/currency_conv/verify-source {association_key, source, provider?}"
+    },
+    {
+      "association_key": "ASC-20260809-USDCNY-L09",
+      "row_id": 4,
+      "date": "2026-08-09",
+      "pair": "USD/CNY",
+      "rate": 7.0,
+      "current_source": "旧来源 L09｜迁移前本地快照｜原始提供方未登记·待补核（来源属性始终为旧来源，不会改标为新版提供方）",
+      "source_kind": "legacy_unverified",
+      "source_missing": false,
+      "reason": "旧来源留档但原始提供方待运营补核",
+      "action": "POST /api/currency_conv/verify-source {association_key, source, provider?}"
+    },
+    {
+      "association_key": "ASC-20260715-GBPCNY-MISSING",
+      "row_id": 6,
+      "date": "2026-07-15",
+      "pair": "GBP/CNY",
+      "rate": 9.1,
+      "current_source": "旧来源留档｜原始来源缺失·待补核（来源属性为旧记录，不是新版提供方）",
+      "source_kind": "legacy_missing",
+      "source_missing": true,
+      "reason": "原始取数来源缺失/为占位，补核前该快照不可作为口径消费",
+      "action": "POST /api/currency_conv/verify-source {association_key, source, provider?}"
+    }
+  ],
+  "source_review_count": 5,
+  "next_step": "运营凭此回执补核来源（verify-source）；中断后再次调用 migrate/backfill 可续跑且不产生重复。",
+  "items": [
+    {
+      "association_key": "SNAP-ROW-1",
+      "row_id": 1,
+      "natural_key": "2026-09-01|货币换算器样例1/货币换算器样例1",
+      "rate": null,
+      "catalog_ref": "version-catalog/snapshots/SNAP-ROW-1.json",
+      "existed": true
+    },
+    {
+      "association_key": "SNAP-ROW-2",
+      "row_id": 2,
+      "natural_key": "2026-09-02|货币换算器样例2/货币换算器样例2",
+      "rate": null,
+      "catalog_ref": "version-catalog/snapshots/SNAP-ROW-2.json",
+      "existed": true
+    },
+    {
+      "association_key": "SNAP-ROW-3",
+      "row_id": 3,
+      "natural_key": "2026-09-03|货币换算器样例3/货币换算器样例3",
+      "rate": null,
+      "catalog_ref": "version-catalog/snapshots/SNAP-ROW-3.json",
+      "existed": true
+    },
+    {
+      "association_key": "ASC-20260809-USDCNY-L09",
+      "row_id": 4,
+      "natural_key": "2026-08-09|USD/CNY",
+      "rate": 7.0,
+      "catalog_ref": "version-catalog/snapshots/ASC-20260809-USDCNY-L09.json",
+      "existed": true
+    },
+    {
+      "association_key": "ASC-20260809-USDCNY-N10",
+      "row_id": 5,
+      "natural_key": "2026-08-09|USD/CNY",
+      "rate": 7.2,
+      "catalog_ref": "version-catalog/snapshots/ASC-20260809-USDCNY-N10.json",
+      "existed": true
+    },
+    {
+      "association_key": "ASC-20260715-GBPCNY-MISSING",
+      "row_id": 6,
+      "natural_key": "2026-07-15|GBP/CNY",
+      "rate": 9.1,
+      "catalog_ref": "version-catalog/snapshots/ASC-20260715-GBPCNY-MISSING.json",
+      "existed": true
+    }
+  ]
+}

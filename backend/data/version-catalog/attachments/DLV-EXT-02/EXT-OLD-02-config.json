@@ -1,0 +1,18 @@
+{
+  "导出任务id": 6,
+  "任务名称": "EXT-OLD-02 外部旧格式回传｜完成后凭关联键复验真实换算来源",
+  "商品范围": "WC-SET-001",
+  "导出格式": "CSV",
+  "时间范围": "2026-08-09",
+  "外部格式版本": "legacy-external-v0",
+  "字段映射": {
+    "商品标识": "goods_code",
+    "快照日期": "snapshot_date",
+    "币对": "currency_pair",
+    "汇率": "fx_rate",
+    "关联键": "association_key"
+  },
+  "口径绑定": "ASC-EXT-OLD-02",
+  "交付凭据": "DLV-EXT-02",
+  "模板版本": "price-export-template-v1"
+}

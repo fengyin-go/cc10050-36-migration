@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "credential": "DLV-EXT-02",
+  "task_id": 6,
+  "task_name": "EXT-OLD-02 外部旧格式回传｜完成后凭关联键复验真实换算来源",
+  "material_code": "EXT-OLD-02",
+  "revision": 1,
+  "state": "已交付",
+  "delivered_at": "2026-08-11T03:20:00+00:00",
+  "date": "2026-08-09",
+  "pair": "USD/CNY",
+  "snapshot_key": "ASC-20260809-USDCNY-L09",
+  "snapshot_ref": "version-catalog/snapshots/ASC-20260809-USDCNY-L09.json",
+  "rate": 7.0,
+  "rate_text": "7.0",
+  "source": "旧来源 L09｜迁移前本地快照｜原始提供方未登记·待补核（来源属性始终为旧来源，不会改标为新版提供方）",
+  "source_kind": "legacy_unverified",
+  "source_verified": false,
+  "association_key": "ASC-EXT-OLD-02",
+  "resolves_to": "ASC-20260809-USDCNY-L09",
+  "caliber": "legacy",
+  "note": "外部旧格式附注：旧版文件中的关联键 ASC-EXT-OLD-02 指向实际消费的存量快照 ASC-20260809-USDCNY-L09（2026-08-09 USD/CNY=7.0，旧来源 L09，待补核），可凭交付凭据 DLV-EXT-02 复验。",
+  "config": {
+    "导出任务id": 6,
+    "任务名称": "EXT-OLD-02 外部旧格式回传｜完成后凭关联键复验真实换算来源",
+    "商品范围": "WC-SET-001",
+    "导出格式": "CSV",
+    "时间范围": "2026-08-09",
+    "外部格式版本": "legacy-external-v0",
+    "字段映射": {
+      "商品标识": "goods_code",
+      "快照日期": "snapshot_date",
+      "币对": "currency_pair",
+      "汇率": "fx_rate",
+      "关联键": "association_key"
+    },
+    "口径绑定": "ASC-EXT-OLD-02",
+    "交付凭据": "DLV-EXT-02",
+    "模板版本": "price-export-template-v1"
+  },
+  "attachments": [
+    {
+      "name": "EXT-OLD-02-config.json",
+      "kind": "config",
+      "description": "回查配置：导出模板、字段映射、口径绑定",
+      "url": "/api/price_export/credential/DLV-EXT-02/attachments/EXT-OLD-02-config.json"
+    },
+    {
+      "name": "EXT-OLD-02-delivery.csv",
+      "kind": "csv",
+      "description": "交付数据附件（含日期、币对、汇率与关联键）",
+      "url": "/api/price_export/credential/DLV-EXT-02/attachments/EXT-OLD-02-delivery.csv"
+    },
+    {
+      "name": "EXT-OLD-02-legacy-external.csv",
+      "kind": "legacy-external",
+      "description": "外部旧格式原始文件，完成后可凭其中关联键定位真实换算来源",
+      "url": "/api/price_export/credential/DLV-EXT-02/attachments/EXT-OLD-02-legacy-external.csv"
+    }
+  ],
+  "items": [
+    {
+      "label": "WC-SET-001 跨境套装报价（测试记录可复算的一笔）",
+      "goods_code": "WC-SET-001",
+      "amount": 100.0,
+      "from": "USD",
+      "rate": 7.0,
+      "converted": 700.0,
+      "to": "CNY"
+    }
+  ],
+  "immutable": true
+}

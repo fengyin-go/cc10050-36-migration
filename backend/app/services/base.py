@@ -31,9 +31,18 @@ class BaseModuleService:
                     row for row in rows
                     if expected.casefold() in str(row.get(field, "")).casefold()
                 ]
-        if keyword and self.LIST_FIELDS:
-            field = self.LIST_FIELDS[0]
-            rows = [row for row in rows if keyword.casefold() in str(row.get(field, "")).casefold()]
+        if keyword:
+            # cc10050：关键字在全部字段（含编号/凭据/关联键等扩展字段）中匹配，
+            # 便于运营用 L09、N10、凭据号或关联键直接定位记录。
+            needle = keyword.casefold()
+            matched = []
+            for row in rows:
+                haystack = " ".join(
+                    str(value) for value in row.values() if value is not None
+                ).casefold()
+                if needle in haystack:
+                    matched.append(row)
+            rows = matched
         if status:
             rows = [row for row in rows if row.get("status") == status]
         total = len(rows)
@@ -57,7 +66,16 @@ class BaseModuleService:
         entry["pending"] = True
         entry["abnormal"] = False
         rows.append(entry)
+        store.persist()
         return entry, []
+
+    def dispatch_action(self, entry_id: int, action: str,
+                        payload: dict | None = None) -> dict:
+        """富结果动作分派：路由层统一调它，子类可覆盖以返回凭据/回执等数据。"""
+        entry, message = self.run_action(entry_id, action)
+        if entry is not None:
+            store.persist()
+        return {"ok": entry is not None, "message": message, "entry": entry}
 
     def run_action(self, entry_id: int, action: str) -> tuple[dict[str, Any] | None, str]:
         entry = store.find(self.MODULE, entry_id)
@@ -69,6 +87,7 @@ class BaseModuleService:
         entry["status"] = target
         entry["pending"] = target != self.STATUS_ORDER[-1]
         entry["abnormal"] = action in self.NEGATIVE_ACTIONS
+        store.persist()
         return entry, f"{self.ENTITY}已{action}"
 
     def domain_snapshot(self) -> dict[str, Any]:

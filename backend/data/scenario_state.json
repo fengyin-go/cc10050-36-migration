@@ -1,0 +1,11 @@
+{
+  "seed_version": "cc10050-v1",
+  "active_caliber": "legacy",
+  "receipt_seq": 1,
+  "rollback_seq": 0,
+  "delivery_seq": 0,
+  "latest_receipt_id": "RCP-MIG-0001",
+  "migration_status": "completed",
+  "switch_history": [],
+  "rollback_history": []
+}
